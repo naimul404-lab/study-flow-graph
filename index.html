@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>StudyFlow Graph</title>
+    <meta name="description" content="StudyFlow Graph helps students map learning topics, prerequisites, and mastery progress." />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="container nav-wrap">
+        <div>
+          <p class="eyebrow">Learning roadmap</p>
+          <h1>StudyFlow Graph</h1>
+        </div>
+        <a href="#topics" class="nav-link">View roadmap</a>
+      </div>
+    </header>
+
+    <main class="container">
+      <section class="hero card">
+        <div>
+          <p class="section-tag">Next best concept</p>
+          <h2 id="bestTopic">Loading...</h2>
+          <p id="bestTopicReason" class="hero-copy">Calculating your learning path...</p>
+        </div>
+      </section>
+
+      <section class="controls card">
+        <form id="topicForm">
+          <div class="fields">
+            <label>
+              Topic name
+              <input id="topicName" type="text" placeholder="Dynamic Programming" required />
+            </label>
+
+            <label>
+              Difficulty
+              <select id="difficulty">
+                <option value="Beginner">Beginner</option>
+                <option value="Intermediate">Intermediate</option>
+                <option value="Advanced">Advanced</option>
+              </select>
+            </label>
+
+            <label>
+              Mastery %
+              <input id="mastery" type="number" min="0" max="100" value="30" />
+            </label>
+          </div>
+
+          <div class="form-actions">
+            <button type="submit">Add topic</button>
+            <button type="button" id="resetData" class="secondary">Reset demo</button>
+          </div>
+        </form>
+      </section>
+
+      <section class="stats-grid">
+        <article class="stat card">
+          <span>Topics</span>
+          <strong id="totalTopics">0</strong>
+        </article>
+        <article class="stat card">
+          <span>Avg mastery</span>
+          <strong id="avgMastery">0%</strong>
+        </article>
+        <article class="stat card">
+          <span>Next priority</span>
+          <strong id="priorityCount">0</strong>
+        </article>
+      </section>
+
+      <section id="topics" class="topics-section">
+        <div class="section-header">
+          <h3>Learning roadmap</h3>
+        </div>
+        <div id="topicList" class="topic-grid"></div>
+      </section>
+    </main>
+
+    <script src="./script.js"></script>
+  </body>
+</html>
