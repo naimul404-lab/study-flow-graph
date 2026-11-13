@@ -1,0 +1,90 @@
+const form = document.getElementById('topicForm');
+const topicName = document.getElementById('topicName');
+const difficulty = document.getElementById('difficulty');
+const mastery = document.getElementById('mastery');
+const notes = document.getElementById('notes');
+const results = document.getElementById('results');
+const recommendationList = document.getElementById('recommendationList');
+const topicList = document.getElementById('topicList');
+
+async function loadTopics() {
+  const response = await fetch('/api/topics');
+  const payload = await response.json();
+  renderTopics(payload.data || []);
+  loadRecommendations();
+}
+
+async function loadRecommendations() {
+  const response = await fetch('/api/recommendations');
+  const payload = await response.json();
+  renderRecommendations(payload.data || []);
+}
+
+function renderTopics(items) {
+  topicList.innerHTML = '';
+  if (!items.length) {
+    topicList.innerHTML = '<li class="empty">No topics yet. Add your first concept.</li>';
+    return;
+  }
+
+  for (const item of items) {
+    const li = document.createElement('li');
+    li.innerHTML = `
+      <strong>${item.name}</strong>
+      <span>${item.difficulty}</span>
+      <span>Mastery: ${item.mastery}%</span>
+    `;
+    topicList.appendChild(li);
+  }
+}
+
+function renderRecommendations(items) {
+  recommendationList.innerHTML = '';
+  if (!items.length) {
+    recommendationList.innerHTML = '<li class="empty">Add topics to generate recommendations.</li>';
+    return;
+  }
+
+  for (const item of items) {
+    const li = document.createElement('li');
+    li.innerHTML = `
+      <strong>${item.name}</strong>
+      <span>Mastery: ${item.mastery}%</span>
+      <small>Suggested next</small>
+    `;
+    recommendationList.appendChild(li);
+  }
+}
+
+form.addEventListener('submit', async (event) => {
+  event.preventDefault();
+  const payload = {
+    name: topicName.value.trim(),
+    difficulty: difficulty.value,
+    mastery: Number(mastery.value),
+    notes: notes.value.trim()
+  };
+
+  if (!payload.name) {
+    results.textContent = 'Please enter a topic name.';
+    return;
+  }
+
+  const response = await fetch('/api/topics', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload)
+  });
+
+  const data = await response.json();
+  if (!response.ok) {
+    results.textContent = data.error || 'Something went wrong.';
+    return;
+  }
+
+  results.textContent = `Added topic: ${data.data.name}`;
+  form.reset();
+  loadTopics();
+});
+
+loadTopics();

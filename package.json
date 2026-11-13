@@ -1,0 +1,14 @@
+{
+  "name": "study-flow-graph",
+  "version": "1.0.0",
+  "description": "StudyFlow Graph helps learners manage topics, prerequisites, and mastery to discover the next best concept to study.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "dependencies": {
+    "better-sqlite3": "^11.8.1",
+    "express": "^4.21.2"
+  }
+}
